@@ -216,7 +216,7 @@ module timer_unit
           end
 	
 	// INPUT EVENTS: HIGHER PRIORITY
-	if ( event_lo_i == 1 | s_start_timer_lo == 1 )
+	if ( ((event_lo_i == 1) && (s_cfg_lo[`IEM_BIT] == 1'b1)) | s_start_timer_lo == 1 )
 	  s_cfg_lo[`ENABLE_BIT] = 1;
 	else
 	  begin
@@ -233,7 +233,7 @@ module timer_unit
 	  end
 	
 	// INPUT EVENTS: HIGHER PRIORITY
-	if ( event_hi_i == 1 | s_start_timer_hi == 1 )
+	if ( ((event_hi_i == 1) && (s_cfg_hi[`IEM_BIT] == 1'b1)) | s_start_timer_hi == 1 )
 	  s_cfg_hi[`ENABLE_BIT] = 1;
 	else
 	  begin
