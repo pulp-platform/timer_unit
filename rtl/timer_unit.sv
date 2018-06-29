@@ -72,7 +72,7 @@ module timer_unit
    logic 			      s_write_counter_lo, s_write_counter_hi;
    logic 			      s_start_timer_lo,s_start_timer_hi,s_reset_timer_lo,s_reset_timer_hi;
    
-   logic 			      s_ref_clk0, s_ref_clk1, s_ref_clk2, s_ref_clk_edge;
+   logic 			      s_ref_clk0, s_ref_clk1, s_ref_clk2, s_ref_clk3, s_ref_clk_edge, s_ref_clk_edge_del;
    
    logic [31:0] 		      s_counter_val_lo, s_counter_val_hi;
    
@@ -227,7 +227,7 @@ module timer_unit
 	       end
 	     else
 	       begin
-		  if ( ( s_cfg_lo[`ONE_SHOT_BIT] == 1'b1 ) && ( s_timer_val_lo  == 32'hFFFFFFFF ) && ( s_target_reached_hi == 1'b1 ) ) // ONE SHOT FEATURE: DISABLES TIMER ONCE LOW COUNTER REACHES 0xFFFFFFFF and HI COUNTER TARGET IS REACHED
+			  if ( ( s_cfg_lo[`ONE_SHOT_BIT] == 1'b1 ) && ( s_target_reached_lo == 1'b1 ) && ( s_target_reached_hi == 1'b1 ) ) // ONE SHOT FEATURE: DISABLES TIMER ONCE LOW COUNTER REACHES 0xFFFFFFFF and HI COUNTER TARGET IS REACHED
 		    s_cfg_lo[`ENABLE_BIT] = 0;
 	       end
 	  end
@@ -239,6 +239,10 @@ module timer_unit
 	  begin
 	     if ( ( s_cfg_hi_reg[`MODE_64_BIT] == 1'b0 ) && ( s_cfg_hi[`ONE_SHOT_BIT] == 1'b1 ) && ( s_target_reached_hi == 1'b1 ) ) // ONE SHOT FEATURE: DISABLES TIMER ONCE THE TARGET IS REACHED IN 32 BIT MODE
 	       s_cfg_hi[`ENABLE_BIT] = 0;
+	   	else begin
+	   		if ( ( s_cfg_lo[`ONE_SHOT_BIT] == 1'b1 ) && ( s_target_reached_lo == 1'b1 ) && ( s_target_reached_hi == 1'b1 ) )
+	   	   		s_cfg_hi[`ENABLE_BIT] = 0;
+	   	end
 	  end
 	
 	// RESET LO
@@ -332,7 +336,7 @@ module timer_unit
 	       end
 	     else // 64-bit mode
 	       begin
-		  if ( ( s_cfg_lo_reg[`CMP_CLR_BIT] == 1'b1 ) && ( s_timer_val_lo  == 32'hFFFFFFFF )  && ( s_target_reached_hi == 1'b1 ) ) // if compare and clear feature is enabled the counter is resetted when the target is reached
+			  if ( ( s_cfg_lo_reg[`CMP_CLR_BIT] == 1'b1 ) && ( s_target_reached_lo == 1'b1 )  && ( s_target_reached_hi == 1'b1 ) ) // if compare and clear feature is enabled the counter is resetted when the target is reached
 		    begin
 		       s_reset_count_lo = 1;
 		    end
@@ -355,7 +359,7 @@ module timer_unit
 	       end
 	     else // 64-bit mode
 	       begin
-		  if ( ( s_cfg_lo_reg[`CMP_CLR_BIT] == 1'b1 ) && ( s_timer_val_lo == 32'hFFFFFFFF )  && ( s_target_reached_hi == 1'b1 ) ) // if compare and clear feature is enabled the counter is resetted when the target is reached
+		  if ( ( s_cfg_lo_reg[`CMP_CLR_BIT] == 1'b1 ) && ( s_target_reached_lo == 1'b1 )  && ( s_target_reached_hi == 1'b1 ) ) // if compare and clear feature is enabled the counter is resetted when the target is reached
 		    begin
 		       s_reset_count_hi = 1;
 		    end
@@ -435,29 +439,29 @@ module timer_unit
 	// 64-bit mode
 	if ( ( s_cfg_lo_reg[`ENABLE_BIT] == 1'b1 ) && ( s_cfg_lo_reg[`MODE_64_BIT] == 1'b1 ) ) // timer enabled,  64-bit mode
 	  begin
-	     s_enable_count_hi = ( s_timer_cmp_lo_reg == 32'hFFFFFFFF );
-	     if ( ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b0 ) && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b0 ) // prescaler disabled, ref clock disabled
-	       begin
-		  s_enable_count_lo = 1'b1;
-	       end
-	     else
-	       if ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b0 && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b1 ) // prescaler disabled, ref clock enabled
-		 begin
-		    s_enable_count_lo = s_ref_clk_edge;
-		 end
-	       else
-		 if ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b1 && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b1 ) // prescaler enabled, ref clock enabled
-		   begin
-		      s_enable_count_prescaler_lo = s_ref_clk_edge;
-		      s_enable_count_lo           = s_target_reached_prescaler_lo;
-		   end
-		 else  // prescaler enabled, ref clock disabled
-		   begin
-		      s_enable_count_prescaler_lo = 1'b1;
-		      s_enable_count_lo           = s_target_reached_prescaler_lo;
-		   end
-	  end
-	
+	    if ( ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b0 ) && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b0 ) // prescaler disabled, ref clock disabled
+	    begin
+		  	s_enable_count_lo = 1'b1;
+		  	s_enable_count_hi = ( s_timer_val_lo == 32'hFFFFFFFF );
+	    end
+	    else if ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b0 && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b1 ) // prescaler disabled, ref clock enabled
+		begin
+		   s_enable_count_lo = s_ref_clk_edge;
+		   s_enable_count_hi = s_ref_clk_edge_del && ( s_timer_val_lo == 32'hFFFFFFFF );
+		end
+       	else if ( s_cfg_lo_reg[`PRESCALER_EN_BIT] == 1'b1 && s_cfg_lo_reg[`REF_CLK_EN_BIT] == 1'b1 ) // prescaler enabled, ref clock enabled
+		begin
+		    s_enable_count_prescaler_lo = s_ref_clk_edge;
+			s_enable_count_lo           = s_target_reached_prescaler_lo;
+   		    s_enable_count_hi = s_target_reached_prescaler_lo && s_ref_clk_edge_del && ( s_timer_val_lo == 32'hFFFFFFFF );
+		end
+		else  // prescaler enabled, ref clock disabled
+		begin
+		    s_enable_count_prescaler_lo = 1'b1;
+		    s_enable_count_lo           = s_target_reached_prescaler_lo;
+		    s_enable_count_hi = s_target_reached_prescaler_lo && ( s_timer_val_lo == 32'hFFFFFFFF );
+		end
+	  end	
      end
    
    // IRQ SIGNALS GENERATION
@@ -488,16 +492,19 @@ module timer_unit
 	     s_ref_clk0    <= 1'b0;
 	     s_ref_clk1    <= 1'b0;
 	     s_ref_clk2    <= 1'b0;
+	     s_ref_clk3    <= 1'b0;
           end
         else
           begin
 	     s_ref_clk0    <= ref_clk_i;
 	     s_ref_clk1    <= s_ref_clk0;
 	     s_ref_clk2    <= s_ref_clk1;
+	     s_ref_clk3    <= s_ref_clk2;
           end
      end
    
    assign s_ref_clk_edge = ( ( s_ref_clk1 == 1'b1 ) & ( s_ref_clk2 == 1'b0 ) ) ? 1'b1  : 1'b0;
+   assign s_ref_clk_edge_del = ( ( s_ref_clk2 == 1'b1 ) & ( s_ref_clk3 == 1'b0 ) ) ? 1'b1  : 1'b0;
    
    //**********************************************************
    //*************** COUNTERS *********************************
