@@ -1,4 +1,7 @@
 timer_unit:
+  incdirs: [
+    rtl,
+  ]
   files: [
     ./rtl/apb_timer_unit.sv,
     ./rtl/timer_unit.sv,
