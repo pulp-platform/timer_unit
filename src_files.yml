@@ -17,6 +17,7 @@ timer_unit:
   ]
   jg_slint_clocks: [
     HCLK,
+    ref_clk_i,
   ]
   jg_slint_resets: [
     ~HRESETn,
