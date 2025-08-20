@@ -10,29 +10,6 @@
 
 // Davide Rossi <davide.rossi@unibo.it>
 
-`define CFG_REG_LO         6'h0
-`define CFG_REG_HI         6'h4
-`define TIMER_VAL_LO       6'h8
-`define TIMER_VAL_HI       6'hC
-`define TIMER_CMP_LO       6'h10
-`define TIMER_CMP_HI       6'h14
-`define TIMER_START_LO     6'h18
-`define TIMER_START_HI     6'h1C
-`define TIMER_RESET_LO     6'h20
-`define TIMER_RESET_HI     6'h24
-
-
-`define ENABLE_BIT          'd0
-`define RESET_BIT           'd1
-`define IRQ_BIT             'd2
-`define IEM_BIT             'd3
-`define CMP_CLR_BIT         'd4
-`define ONE_SHOT_BIT        'd5
-`define PRESCALER_EN_BIT    'd6
-`define REF_CLK_EN_BIT      'd7
-`define PRESCALER_START_BIT 'd8
-`define PRESCALER_STOP_BIT  'd15
-`define MODE_64_BIT         'd31
 
 module apb_timer_unit
   #(
@@ -60,6 +37,36 @@ module apb_timer_unit
 
     output logic                      busy_o
     );
+// tmrg default triplicate
+// tmrg do_not_triplicate HCLK
+// tmrg do_not_triplicate HRESETn
+// tmrg do_not_triplicate ref_clk_i
+// tmrg tmr_error true
+
+
+`define CFG_REG_LO         6'h0
+`define CFG_REG_HI         6'h4
+`define TIMER_VAL_LO       6'h8
+`define TIMER_VAL_HI       6'hC
+`define TIMER_CMP_LO       6'h10
+`define TIMER_CMP_HI       6'h14
+`define TIMER_START_LO     6'h18
+`define TIMER_START_HI     6'h1C
+`define TIMER_RESET_LO     6'h20
+`define TIMER_RESET_HI     6'h24
+
+
+`define ENABLE_BIT          'd0
+`define RESET_BIT           'd1
+`define IRQ_BIT             'd2
+`define IEM_BIT             'd3
+`define CMP_CLR_BIT         'd4
+`define ONE_SHOT_BIT        'd5
+`define PRESCALER_EN_BIT    'd6
+`define REF_CLK_EN_BIT      'd7
+`define PRESCALER_START_BIT 'd8
+`define PRESCALER_STOP_BIT  'd15
+`define MODE_64_BIT         'd31
    
    logic 			      s_req,s_wen;
    logic [31:0] 		      s_addr;

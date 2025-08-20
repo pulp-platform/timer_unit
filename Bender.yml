@@ -8,3 +8,8 @@ sources:
   # Level 1
   - rtl/apb_timer_unit.sv
   - rtl/timer_unit.sv
+  - target: timer_unit_tmrg
+    files:
+      - tmrg_files/timer_unit_counterTMR.sv
+      - tmrg_files/timer_unit_counter_prescTMR.sv
+      - tmrg_files/timer_unitTMR.sv

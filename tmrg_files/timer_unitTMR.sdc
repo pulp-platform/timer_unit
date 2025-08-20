@@ -1,0 +1,191 @@
+set sdc_version 1.3
+
+set tmrgSucces 0
+set tmrgFailed 0
+proc constrainNet netName {
+  global tmrgSucces
+  global tmrgFailed
+  # find nets matching netName pattern
+  set nets [dc::get_net $netName]
+  if {[llength $nets] != 0} {
+    set_dont_touch $nets
+    incr tmrgSucces
+  } else {
+    puts "\[TMRG\] Warning! Net(s) '$netName' not found"
+    incr tmrgFailed
+  }
+}
+
+constrainNet /CSA
+constrainNet /CSB
+constrainNet /CSC
+constrainNet /CSVotedA
+constrainNet /CSVotedB
+constrainNet /CSVotedC
+constrainNet /clk_i
+constrainNet /clk_iA
+constrainNet /clk_iB
+constrainNet /clk_iC
+constrainNet /counter_hi_i/clk_i
+constrainNet /counter_hi_i/clk_iA
+constrainNet /counter_hi_i/clk_iB
+constrainNet /counter_hi_i/clk_iC
+constrainNet /counter_hi_i/rst_ni
+constrainNet /counter_hi_i/rst_niA
+constrainNet /counter_hi_i/rst_niB
+constrainNet /counter_hi_i/rst_niC
+constrainNet /counter_hi_i/s_count_regA[*]
+constrainNet /counter_hi_i/s_count_regB[*]
+constrainNet /counter_hi_i/s_count_regC[*]
+constrainNet /counter_hi_i/s_count_regVotedA[*]
+constrainNet /counter_hi_i/s_count_regVotedB[*]
+constrainNet /counter_hi_i/s_count_regVotedC[*]
+constrainNet /counter_hi_i/target_reachedA
+constrainNet /counter_hi_i/target_reachedB
+constrainNet /counter_hi_i/target_reachedC
+constrainNet /counter_hi_i/target_reachedVotedA
+constrainNet /counter_hi_i/target_reachedVotedB
+constrainNet /counter_hi_i/target_reachedVotedC
+constrainNet /counter_lo_i/clk_i
+constrainNet /counter_lo_i/clk_iA
+constrainNet /counter_lo_i/clk_iB
+constrainNet /counter_lo_i/clk_iC
+constrainNet /counter_lo_i/rst_ni
+constrainNet /counter_lo_i/rst_niA
+constrainNet /counter_lo_i/rst_niB
+constrainNet /counter_lo_i/rst_niC
+constrainNet /counter_lo_i/s_count_regA[*]
+constrainNet /counter_lo_i/s_count_regB[*]
+constrainNet /counter_lo_i/s_count_regC[*]
+constrainNet /counter_lo_i/s_count_regVotedA[*]
+constrainNet /counter_lo_i/s_count_regVotedB[*]
+constrainNet /counter_lo_i/s_count_regVotedC[*]
+constrainNet /counter_lo_i/target_reachedA
+constrainNet /counter_lo_i/target_reachedB
+constrainNet /counter_lo_i/target_reachedC
+constrainNet /counter_lo_i/target_reachedVotedA
+constrainNet /counter_lo_i/target_reachedVotedB
+constrainNet /counter_lo_i/target_reachedVotedC
+constrainNet /prescaler_hi_i/clk_i
+constrainNet /prescaler_hi_i/clk_iA
+constrainNet /prescaler_hi_i/clk_iB
+constrainNet /prescaler_hi_i/clk_iC
+constrainNet /prescaler_hi_i/rst_ni
+constrainNet /prescaler_hi_i/rst_niA
+constrainNet /prescaler_hi_i/rst_niB
+constrainNet /prescaler_hi_i/rst_niC
+constrainNet /prescaler_hi_i/s_count_regA[*]
+constrainNet /prescaler_hi_i/s_count_regB[*]
+constrainNet /prescaler_hi_i/s_count_regC[*]
+constrainNet /prescaler_hi_i/s_count_regVotedA[*]
+constrainNet /prescaler_hi_i/s_count_regVotedB[*]
+constrainNet /prescaler_hi_i/s_count_regVotedC[*]
+constrainNet /prescaler_hi_i/target_reachedA
+constrainNet /prescaler_hi_i/target_reachedB
+constrainNet /prescaler_hi_i/target_reachedC
+constrainNet /prescaler_hi_i/target_reachedVotedA
+constrainNet /prescaler_hi_i/target_reachedVotedB
+constrainNet /prescaler_hi_i/target_reachedVotedC
+constrainNet /prescaler_lo_i/clk_i
+constrainNet /prescaler_lo_i/clk_iA
+constrainNet /prescaler_lo_i/clk_iB
+constrainNet /prescaler_lo_i/clk_iC
+constrainNet /prescaler_lo_i/rst_ni
+constrainNet /prescaler_lo_i/rst_niA
+constrainNet /prescaler_lo_i/rst_niB
+constrainNet /prescaler_lo_i/rst_niC
+constrainNet /prescaler_lo_i/s_count_regA[*]
+constrainNet /prescaler_lo_i/s_count_regB[*]
+constrainNet /prescaler_lo_i/s_count_regC[*]
+constrainNet /prescaler_lo_i/s_count_regVotedA[*]
+constrainNet /prescaler_lo_i/s_count_regVotedB[*]
+constrainNet /prescaler_lo_i/s_count_regVotedC[*]
+constrainNet /prescaler_lo_i/target_reachedA
+constrainNet /prescaler_lo_i/target_reachedB
+constrainNet /prescaler_lo_i/target_reachedC
+constrainNet /prescaler_lo_i/target_reachedVotedA
+constrainNet /prescaler_lo_i/target_reachedVotedB
+constrainNet /prescaler_lo_i/target_reachedVotedC
+constrainNet /r_idA[*]
+constrainNet /r_idB[*]
+constrainNet /r_idC[*]
+constrainNet /r_idVotedA[*]
+constrainNet /r_idVotedB[*]
+constrainNet /r_idVotedC[*]
+constrainNet /ref_clk_i
+constrainNet /ref_clk_iA
+constrainNet /ref_clk_iB
+constrainNet /ref_clk_iC
+constrainNet /rst_ni
+constrainNet /rst_niA
+constrainNet /rst_niB
+constrainNet /rst_niC
+constrainNet /s_addrA[*]
+constrainNet /s_addrB[*]
+constrainNet /s_addrC[*]
+constrainNet /s_addrVotedA[*]
+constrainNet /s_addrVotedB[*]
+constrainNet /s_addrVotedC[*]
+constrainNet /s_cfg_hi_regA[*]
+constrainNet /s_cfg_hi_regB[*]
+constrainNet /s_cfg_hi_regC[*]
+constrainNet /s_cfg_hi_regVotedA[*]
+constrainNet /s_cfg_hi_regVotedB[*]
+constrainNet /s_cfg_hi_regVotedC[*]
+constrainNet /s_cfg_lo_regA[*]
+constrainNet /s_cfg_lo_regB[*]
+constrainNet /s_cfg_lo_regC[*]
+constrainNet /s_cfg_lo_regVotedA[*]
+constrainNet /s_cfg_lo_regVotedB[*]
+constrainNet /s_cfg_lo_regVotedC[*]
+constrainNet /s_ref_clk0A
+constrainNet /s_ref_clk0B
+constrainNet /s_ref_clk0C
+constrainNet /s_ref_clk0VotedA
+constrainNet /s_ref_clk0VotedB
+constrainNet /s_ref_clk0VotedC
+constrainNet /s_ref_clk1A
+constrainNet /s_ref_clk1B
+constrainNet /s_ref_clk1C
+constrainNet /s_ref_clk1VotedA
+constrainNet /s_ref_clk1VotedB
+constrainNet /s_ref_clk1VotedC
+constrainNet /s_ref_clk2A
+constrainNet /s_ref_clk2B
+constrainNet /s_ref_clk2C
+constrainNet /s_ref_clk2VotedA
+constrainNet /s_ref_clk2VotedB
+constrainNet /s_ref_clk2VotedC
+constrainNet /s_ref_clk3A
+constrainNet /s_ref_clk3B
+constrainNet /s_ref_clk3C
+constrainNet /s_ref_clk3VotedA
+constrainNet /s_ref_clk3VotedB
+constrainNet /s_ref_clk3VotedC
+constrainNet /s_reqA
+constrainNet /s_reqB
+constrainNet /s_reqC
+constrainNet /s_reqVotedA
+constrainNet /s_reqVotedB
+constrainNet /s_reqVotedC
+constrainNet /s_timer_cmp_hi_regA[*]
+constrainNet /s_timer_cmp_hi_regB[*]
+constrainNet /s_timer_cmp_hi_regC[*]
+constrainNet /s_timer_cmp_hi_regVotedA[*]
+constrainNet /s_timer_cmp_hi_regVotedB[*]
+constrainNet /s_timer_cmp_hi_regVotedC[*]
+constrainNet /s_timer_cmp_lo_regA[*]
+constrainNet /s_timer_cmp_lo_regB[*]
+constrainNet /s_timer_cmp_lo_regC[*]
+constrainNet /s_timer_cmp_lo_regVotedA[*]
+constrainNet /s_timer_cmp_lo_regVotedB[*]
+constrainNet /s_timer_cmp_lo_regVotedC[*]
+constrainNet /s_wenA
+constrainNet /s_wenB
+constrainNet /s_wenC
+constrainNet /s_wenVotedA
+constrainNet /s_wenVotedB
+constrainNet /s_wenVotedC
+
+
+    puts "TMRG successful  $tmrgSucces failed $tmrgFailed"

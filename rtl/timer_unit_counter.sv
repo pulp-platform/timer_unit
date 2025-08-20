@@ -26,12 +26,20 @@ module timer_unit_counter
    output logic        target_reached_o
    );
    
-   logic [31:0]        s_count, s_count_reg;
+// tmrg default triplicate
+// tmrg do_not_triplicate clk_i
+// tmrg do_not_triplicate rst_ni
+// tmrg tmr_error true
+   logic [31:0]        s_count, s_count_reg, s_count_regVoted;
+   logic target_reached, target_reachedVoted;
+   assign s_count_regVoted = s_count_reg;
+   assign target_reachedVoted = target_reached;
+   assign target_reached_o = target_reachedVoted;
 
    // COUNTER
    always_comb
    begin
-      s_count = s_count_reg;
+      s_count = s_count_regVoted;
       
       // start counting
       if ( reset_count_i == 1 )
@@ -43,7 +51,7 @@ module timer_unit_counter
 	   else
 	     begin
 		if ( enable_count_i == 1 ) // the counter is increased if counter is enabled and there is a tick
-		  s_count = s_count_reg + 1;
+		  s_count = s_count_regVoted + 1;
 	     end
 	end
    end
@@ -60,14 +68,14 @@ module timer_unit_counter
    always_ff@(posedge clk_i, negedge rst_ni)
    begin
       if (rst_ni == 0)
-         target_reached_o <= 1'b0;
+         target_reached <= 1'b0;
       else
          if ( s_count == compare_value_i )
-            target_reached_o <= 1'b1;
+            target_reached <= 1'b1;
          else
-            target_reached_o <= 1'b0;
+            target_reached <= 1'b0;
    end
    
-   assign counter_value_o = s_count_reg;
+   assign counter_value_o = s_count_regVoted;
 
 endmodule
